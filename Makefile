@@ -36,12 +36,7 @@ $(BUILDDIR)/$(JAR): $(CLASSES)
 clean:
 	rm -rf $(CLASSDIR)
 
-run: build
-	java -jar $(BUILDDIR)/$(JAR)
-
 help:
 	@printf "\033[97;1mAvailable tasks:\033[0m\n"
 	@printf "\t\033[32mbuild \033[90m(default)\033[0m\n"
 	@printf "\t  Compile all classes into \033[97;1m%s\033[0m\n" $(BUILDDIR)/$(JAR)
-	@printf "\t\033[32mrun\033[0m\n"
-	@printf "\t  Compile and run the jar with no arguments\n"
