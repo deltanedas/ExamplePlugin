@@ -2,7 +2,7 @@
 
 Clone this repository first.
 To edit the plugin display name and other data, take a look at `src/main.resources/plugin.json`.
-Edit the name of the project itself by going into `settings.gradle`.
+Edit the name of the project with `make JAR=andhfurhthfur.jar`
 
 ### Basic Usage
 
@@ -13,10 +13,9 @@ Please note that the plugin system is in beta, and as such is subject to changes
 
 ### Building a Jar
 
-`gradlew jar` / `./gradlew jar`
+`make`
 
-Output jar should be in `build/libs`.
-
+The jar will be in **build/libs/ExamplePlugin.jar**.
 
 ### Installing
 
