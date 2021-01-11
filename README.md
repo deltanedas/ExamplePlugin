@@ -2,7 +2,6 @@
 
 Clone this repository first.
 To edit the plugin display name and other data, take a look at `plugin.json`.
-Edit the name of the project itself by going into `settings.gradle`.
 
 ### Basic Usage
 
@@ -13,10 +12,9 @@ Please note that the plugin system is in beta, and as such is subject to changes
 
 ### Building a Jar
 
-`gradlew jar` / `./gradlew jar`
+`$ make -j$(nproc)`
 
-Output jar should be in `build/libs`.
-
+Output jar will be in `ExamplePlugin.jar`.
 
 ### Installing
 
