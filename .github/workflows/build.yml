@@ -15,13 +15,10 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 14
-    - name: Build mod
+    - name: Build plugin
       run: make -j$(nproc)
-
-    - name: Upload jars
+    - name: Upload jar
       uses: actions/upload-artifact@v2
       with:
-        name: Desktop and Universal builds
-        path: |
-          ExampleJavaMod-Desktop.jar#
-          ExampleJavaMod.jar
+        name: Plugin (zipped)
+        path: ExamplePlugin.jar
