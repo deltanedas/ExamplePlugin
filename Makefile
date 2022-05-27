@@ -4,8 +4,8 @@ JAVACFLAGS := -g
 override JAVACFLAGS += -sourcepath src
 # Add .jar libraries
 override JAVACFLAGS += -classpath "libs/*"
-# Compile against java 8 abi
-override JAVACFLAGS += --release 8
+# Compile against java 17 abi - won't run on android
+override JAVACFLAGS += --release 17
 
 JARFLAGS := -C build/classes .
 override JARFLAGS += -C assets .
@@ -14,29 +14,29 @@ sources := $(shell find src -type f -name "*.java")
 assets := $(shell find assets -type f)
 classes := $(patsubst src/%.java, build/classes/%.class, $(sources))
 
-# Mindustry + arc version to link against
-version := v122.1
+# Mindustry version to build against
+mindustry_version := 4dcf491abf
+# Arc version to build against
+arc_version := dfcb21ce56
 
 all: build
 
-libs := libs/core-release.jar libs/arc-core.jar
+libs := core-release arc-core
+libs := $(libs:%=libs/%.jar)
 
-libs/core-release.jar:
-	@printf "\033[33m> LIB\033[0m\t%s\n" $@
-	@mkdir -p libs
-	curl 'https://jitpack.io/com/github/Anuken/Mindustry/core/$(version)/core-$(version).jar.sha1' -o $@.sha1 2>/dev/null
-	curl 'https://jitpack.io/com/github/Anuken/Mindustry/core/$(version)/core-$(version).jar' -o $@
-	@printf "\t%s" "$@" >> $@.sha1
-	sha1sum -c $@.sha1
-	@rm $@.sha1
+define newlib
+libs/$(1).jar:
+	@printf "\033[33m> LIB\033[0m\t%s\n" $$@
+	@mkdir -p $$(@D)
+	@curl 'https://jitpack.io/com/github/$(2)/$(3)/$(4)/$(3)-$(4).jar.sha1' -o $$@.sha1 --no-progress-meter
+	curl 'https://jitpack.io/com/github/$(2)/$(3)/$(4)/$(3)-$(4).jar' -o $$@ --no-progress-meter
+	@printf "\t%s" "$$@" >> $$@.sha1
+	@sha1sum -c $$@.sha1 || (rm $$@ && exit 1)
+	@rm $$@.sha1
+endef
 
-libs/arc-core.jar:
-	@printf "\033[33m> LIB\033[0m\t%s\n" $@
-	curl 'https://jitpack.io/com/github/Anuken/Arc/arc-core/$(version)/arc-core-$(version).jar.sha1' -o $@.sha1 2>/dev/null
-	curl 'https://jitpack.io/com/github/Anuken/Arc/arc-core/$(version)/arc-core-$(version).jar' -o $@
-	@printf "\t%s" "$@" >> $@.sha1
-	sha1sum -c $@.sha1
-	@rm $@.sha1
+$(eval $(call newlib,core-release,Anuken/MindustryJitpack,core,$(mindustry_version)))
+$(eval $(call newlib,arc-core,Anuken/Arc,arc-core,$(arc_version)))
 
 build: ExamplePlugin.jar
 
